@@ -418,7 +418,6 @@ const MapVisualization = ({ isMarkingEnabled = false , setMarkedPositions, selec
         }
         
         const data = await response.json();
-        // console.log(data.map_data[0]);
         setMapData(MapUtils.processMapData(data.map_data));
       } catch (err) {
         console.error('Error fetching map data:', err);
