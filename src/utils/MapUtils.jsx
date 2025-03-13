@@ -121,14 +121,14 @@ export const processMapData = (text) => {
         
         // Extract header
         const header = {
-        id: view.getInt16(0, true),
-        size: view.getInt32(2, true),
-        lz4_size: view.getInt32(6, true),
-        width: view.getInt32(10, true),
-        height: view.getInt32(14, true),
-        resolution: view.getFloat32(18, true),
-        origin_x: view.getFloat32(22, true),
-        origin_y: view.getFloat32(26, true)
+            id: view.getInt16(0, true),
+            size: view.getInt32(2, true),
+            lz4_size: view.getInt32(6, true),
+            width: view.getInt32(10, true),
+            height: view.getInt32(14, true),
+            resolution: view.getFloat32(18, true),
+            origin_x: view.getFloat32(22, true),
+            origin_y: view.getFloat32(26, true)
         };
         
         // Extract compressed data
