@@ -26,6 +26,10 @@ const Sidebar = ({ actionTab, setSelectedMapID, markedPositions }) => {
     console.log("Loading map:", mapId);
     setSelectedMapID(mapId);
   };
+  
+  const clearStatusHistory = () => {
+    setStatusHistory([]);
+  };
 
   // Fetch status
   useEffect(() => {
@@ -232,7 +236,18 @@ const Sidebar = ({ actionTab, setSelectedMapID, markedPositions }) => {
         className="Fixed border-t-6 border-gray-200 p-1 overflow-y-auto"
         style={{ height: `${statusBarHeight}%` }}
       >
-        <div className="font-bold text-black-800">Status History</div>
+      <div className="flex flex-col">
+        <div className="flex justify-between items-center">
+          <div className="font-bold text-black-800">Status History</div>
+          <button 
+            className="bg-gray-500 text-white px-4 py-0 mr-2 rounded hover:bg-red-700"
+            onClick={clearStatusHistory}
+          >
+            Clear
+          </button>
+        </div>
+      </div>
+
         <div>
           {statusHistory.map((entry, index) => (
             <div key={index}>{entry}</div>
