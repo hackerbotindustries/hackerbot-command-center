@@ -1,43 +1,48 @@
-# Build and Release Folders
-bin-debug/
-bin-release/
-[Oo]bj/
-[Bb]in/
+# Node.js dependencies
+node_modules/
+package-lock.json
 
-# Other files and folders
-.settings/
-
-# Executables
-*.swf
-*.air
-*.ipa
-*.apk
-
-# Project files, i.e. `.project`, `.actionScriptProperties` and `.flexProperties`
-# should NOT be excluded as they contain compiler settings and other important
-# information for Eclipse / Flash Builder.
-=======
 # Logs
-logs
-*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
-lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-*.local
+# Vite and Build Outputs
+dist/
+.vite/
+.vitepress/cache/
 
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
+# Environment Files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Editor & OS Specific Files
+.vscode/
+.idea/
+*.swp
+*.swo
 .DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
+Thumbs.db
+
+# Shell Script Backups (if modified)
+*.bak
+*.tmp
+
+# GitHub Workflow Cache (optional)
+.github/*.log
+.github/workflows/*.log
+
+# Ignore local React testing files
+coverage/
+jest/
+cypress/
+playwright/
+
+# Ignore ESLint and Prettier Cache
+.eslintcache
+.prettierignore
+.prettiercache
