@@ -14,7 +14,7 @@ if [ ! -d "$logdir" ]; then
 fi
 
 # Keep only the latest 5 logs
-ls -1dt "$logdir"/* | tail -n +6 | xargs rm -rf 2>/dev/null
+ls -1dt "$"logdir/* | tail -n +6 | xargs rm -rf 2>/dev/null
 
 logfile_frontend="$logdir/$timestamp_react.txt"
 
