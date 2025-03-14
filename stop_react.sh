@@ -1,20 +1,17 @@
 #!/bin/bash
 
-# Ports for React
-REACT_PORT=5173
-
 echo "---------------------------------------------"
 echo "STOPPING HACKERBOT WEB APPLICATION"
 echo "---------------------------------------------"
 
-# Find and kill React process by port
-REACT_PID=$(lsof -ti :$REACT_PORT)
-if [ -n "$REACT_PID" ]; then
-    echo "Stopping React frontend (PID: $REACT_PID)..."
-    kill "$REACT_PID"
-    echo "React frontend stopped."
+NODE_PIDS=$(ps aux | grep '\snode\s' | awk '{print $2}')
+
+if [ -n "$NODE_PIDS" ]; then
+    echo "Stopping React processes..."
+    kill -9 $NODE_PIDS
+    echo "All React-related processes stopped."
 else
-    echo "React frontend not running on port $REACT_PORT."
+    echo "No running React-related processes found."
 fi
 
 echo "---------------------------------------------"
