@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "---------------------------------------------"
-echo "STOPPING HACKERBOT WEB APPLICATION"
+echo "STOPPING HACKERBOT COMMAND CENTER"
 echo "---------------------------------------------"
 
 NODE_PIDS=$(ps aux | grep '\snode\s' | awk '{print $2}')
@@ -15,5 +15,5 @@ else
 fi
 
 echo "---------------------------------------------"
-echo "HACKERBOT WEB APPLICATION STOPPED"
+echo "HACKERBOT COMMAND CENTER STOPPED"
 echo "---------------------------------------------"

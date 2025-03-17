@@ -1,7 +1,9 @@
 #!/bin/bash
 set -o pipefail
 
-BASE_DIR="$(pwd)"
+BASE_DIR="$(pwd)/react"
+
+cd react/
 
 # Log directory setup
 timestamp_react="hackerbot_react_$(date '+%Y%m%d%H%M')"
@@ -27,14 +29,15 @@ LOCAL_IP=$(hostname -I | awk '{print $1}')
 function echo_failure {
     echo ""
     echo "---------------------------------------------"
-    echo "FAILURE! Hackerbot react frontend failed to launch."
+    echo "FAILURE! Hackerbot Command Center failed to launch."
+    echo "React Frontend failed to start."
     echo "Check logs in: $logdir"
     echo "---------------------------------------------"
     exit 1
 }
 
 echo "---------------------------------------------"
-echo "STARTING HACKERBOT REACT FRONTEND"
+echo "STARTING HACKERBOT COMMAND CENTER"
 echo "---------------------------------------------"
 
 # Start React Frontend
@@ -45,13 +48,13 @@ PID_FRONTEND=$!
 sleep 2
 
 if ! ps -p $PID_FRONTEND > /dev/null; then
-    echo "React frontend failed to start!"
+    echo "Hackerbot Command Center failed to start!"
     echo_failure
 fi
 
 echo ""
 echo "---------------------------------------------"
-echo "SUCCESS! Hackerbot React Frontend is Running!"
+echo "SUCCESS! Hackerbot Command Center is Running!"
 echo "React Frontend: http://localhost:$REACT_PORT"
 echo "                http://$LOCAL_IP:$REACT_PORT"
 echo "Log file: $logfile_frontend"
