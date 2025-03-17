@@ -3,7 +3,7 @@ set -o pipefail
 
 BASE_DIR="$(pwd)/react"
 
-cd react/
+cd $HOME/hackerbot/hackerbot-command-center/react/
 
 # Log directory setup
 timestamp_react="hackerbot_react_$(date '+%Y%m%d%H%M')"
