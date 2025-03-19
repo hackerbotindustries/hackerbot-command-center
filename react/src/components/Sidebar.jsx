@@ -3,7 +3,7 @@ import { FaXmark } from "react-icons/fa6";
 import { FaRegMap } from "react-icons/fa";
 import { useSidebarLogic } from "../utils/SidebarUtils"; // Import extracted logic
 
-const Sidebar = ({ actionTab, setSelectedMapID, markedPositions, setMarkedPositions }) => {
+const Sidebar = ({ actionTab, setSelectedMapID, setMarkedPositions, markedPositions }) => {
   const {
     statusHistory,
     mapList,
@@ -57,9 +57,20 @@ const Sidebar = ({ actionTab, setSelectedMapID, markedPositions, setMarkedPositi
               {markedPositions && markedPositions.length > 0 ? (
                 markedPositions.map(marker => (
                   <li key={marker.id}>
+
                     <a href="#" className="flex items-center w-full p-2 transition duration-75 rounded-lg group hover:bg-gray-100 hover:text-blue-500">
-                      <IoLocationSharp className="mr-1" />
-                      {marker.label}: ({marker.worldX}, {marker.worldY})
+                      <FaXmark className="mr-1" />
+                      <input 
+                        type="text"
+                        value={marker.label}
+                        className="w-auto min-w-0 max-w-[100px] px-1 py-0.5 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
+                        onChange={(e) => {
+                          const newLabel = e.target.value;
+                          setMarkedPositions(prev => prev.map(m => 
+                            m.id === marker.id ? {...m, label: newLabel} : m
+                          ));
+                        }}
+                      />: ({marker.worldX}, {marker.worldY})
                       <button 
                         className="ml-auto px-2 hidden group-hover:inline-block bg-red-500 text-white rounded-lg"
                         onClick={(e) => {
