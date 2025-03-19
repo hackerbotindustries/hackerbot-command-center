@@ -39,7 +39,8 @@ const MapVisualization = ({ isMarkingEnabled = false, selectedMapID, setMarkedPo
       setSelectedPoint, 
       isMarkingEnabled, 
       setMarkedPositions,
-      markedPositions
+      markedPositions,
+      selectedMapID
     );
   };
   
@@ -128,7 +129,7 @@ const MapVisualization = ({ isMarkingEnabled = false, selectedMapID, setMarkedPo
             }}
           />
               
-          {markedPositions.map(marker => (
+          {markedPositions.filter(marker => marker.map_id === selectedMapID).map(marker => (
             <div
               key={marker.id}
               className="absolute"

@@ -3,7 +3,7 @@ import { FaXmark } from "react-icons/fa6";
 import { FaRegMap } from "react-icons/fa";
 import { useSidebarLogic } from "../utils/SidebarUtils"; // Import extracted logic
 
-const Sidebar = ({ actionTab, setSelectedMapID, setMarkedPositions, markedPositions }) => {
+const Sidebar = ({ actionTab, setSelectedMapID, setMarkedPositions, markedPositions, selectedMapID }) => {
   const {
     statusHistory,
     mapList,
@@ -59,7 +59,9 @@ const Sidebar = ({ actionTab, setSelectedMapID, setMarkedPositions, markedPositi
             </div>
             <ul className="py-1 space-y-1">
               {markedPositions && markedPositions.length > 0 ? (
-                markedPositions.map(marker => (
+                markedPositions
+                  .filter(marker => marker.map_id === selectedMapID)
+                  .map(marker => (
                   <li key={marker.id}>
                    <button className={`flex items-center w-full p-2 transition duration-75 rounded-lg group ${marker.selected ? 'bg-blue-100 text-blue-500' : 'hover:bg-gray-100 hover:text-blue-500'}`}
                     onClick={(e) => {

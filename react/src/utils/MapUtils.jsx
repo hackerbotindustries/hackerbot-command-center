@@ -85,7 +85,7 @@ export const handleMouseUp = (e, isDragging, setIsDragging, canvasRef, handleCan
 };
 
 // Canvas click handler
-export const handleCanvasClick = (e, mapData, canvasRef, scale, rotation, setSelectedPoint, isMarkingEnabled, setMarkedPositions, markedPositions) => {
+export const handleCanvasClick = (e, mapData, canvasRef, scale, rotation, setSelectedPoint, isMarkingEnabled, setMarkedPositions, markedPositions, selectedMapID) => {
   if (!mapData || !canvasRef.current) return;
   
   const canvasRect = canvasRef.current.getBoundingClientRect();
@@ -166,7 +166,8 @@ export const handleCanvasClick = (e, mapData, canvasRef, scale, rotation, setSel
                 worldX: worldX.toFixed(2),
                 worldY: worldY.toFixed(2),
                 label: `${markedPositions.length + 1}`,
-                selected: false
+                selected: false,
+                map_id: selectedMapID
             };
             
             setMarkedPositions(prev => [...prev, newMarker]);  
