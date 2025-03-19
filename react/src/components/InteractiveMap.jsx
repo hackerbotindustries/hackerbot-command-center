@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { IoLocationSharp } from 'react-icons/io5';
+import { FaXmark } from "react-icons/fa6";
 import * as MapUtils from '../utils/MapUtils';
 
-const MapVisualization = ({ isMarkingEnabled = false , setMarkedPositions, selectedMapID}) => {
+const MapVisualization = ({ isMarkingEnabled = false , selectedMapID, setMarkedPositions, markedPositions}) => {
   const [mapData, setMapData] = useState(null);
   const [scale, setScale] = useState(1);
   const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -13,7 +14,7 @@ const MapVisualization = ({ isMarkingEnabled = false , setMarkedPositions, selec
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   const [rotation, setRotation] = useState(0);
   
-  const [mp, setMP] = useState([]); // local function to store and set Marked Positions(for display on canvas)
+  // const [mp, setMP] = useState([]); // local function to store and set Marked Positions(for display on canvas)
   
   const canvasRef = useRef(null);
   const containerRef = useRef(null);
@@ -310,6 +311,7 @@ const MapVisualization = ({ isMarkingEnabled = false , setMarkedPositions, selec
     centerMapInContainer();
   }, [mapData]);
 
+  // Draw the grid lines and the origin
   useEffect(() => {
     if (!mapData || !canvasRef.current) return;
     
@@ -384,10 +386,6 @@ const MapVisualization = ({ isMarkingEnabled = false , setMarkedPositions, selec
       // Draw a red plus instead of a crosshair
       ctx.strokeStyle = 'red';
       ctx.lineWidth = 2;
-    
-      // ctx.strokeStyle = 'rgba(255,0,0,0.7)';
-      // ctx.fillStyle = 'rgba(255,0,0,0.7)';
-      // ctx.lineWidth = 1.5;
       
       const plusSize = 5;
       ctx.beginPath();
@@ -399,9 +397,7 @@ const MapVisualization = ({ isMarkingEnabled = false , setMarkedPositions, selec
     }
   }, [mapData]);
 
-
-
-
+  // Fetch the map data from the server
   useEffect(() => {
     const fetchMapData = async () => {
       // Check if selectedMapID exists and is valid
@@ -477,28 +473,18 @@ const MapVisualization = ({ isMarkingEnabled = false , setMarkedPositions, selec
         }}
       />
           
-      {mp.map(marker => (
+      {markedPositions.map(marker => (
         <div
           key={marker.id}
           className="absolute"
           style={{
             left: marker.x - 5, // Offset to center icon
-            top: marker.y - 10,  // Offset to point bottom of icon to exact location
+            top: marker.y - 5,  // Offset to point bottom of icon to exact location
             pointerEvents: 'none', // Allow clicks to pass through
           }}
         >
           <div className="flex flex-col items-center">
-            <IoLocationSharp size={10} color="black" />
-          </div>
-          <div 
-            className="absolute text-xs rounded-full"
-            style={{
-              top: '-10px',
-              left: '2.5px',
-              fontSize: '8px',
-            }}
-          >
-            {marker.label}
+            <FaXmark size={7} color="black" />
           </div>
         </div>
       ))}
