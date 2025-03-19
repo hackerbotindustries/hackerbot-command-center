@@ -1,0 +1,144 @@
+import { useState, useEffect, useRef } from "react";
+
+export const useSidebarLogic = (setSelectedMapID) => {
+  const [status, setStatus] = useState("");
+  const [error, setError] = useState("");
+  const [statusHistory, setStatusHistory] = useState([]);
+  const [mapList, setMapList] = useState([]);
+
+  const [sidebarWidth, setSidebarWidth] = useState(20);
+  const [statusBarHeight, setStatusBarHeight] = useState(25);
+  
+  const [isResizingWidth, setIsResizingWidth] = useState(false);
+  const [isResizingHeight, setIsResizingHeight] = useState(false);
+
+  const sidebarRef = useRef(null);
+  const resizeWidthHandleRef = useRef(null);
+  const resizeHeightHandleRef = useRef(null);
+
+  const loadMap = (mapId) => {
+    console.log("Loading map:", mapId);
+    setSelectedMapID(mapId);
+  };
+
+  const clearStatusHistory = () => {
+    setStatusHistory([]);
+  };
+
+  useEffect(() => {
+    fetch("/api/status")
+      .then(response => response.json())
+      .then(data => {
+        console.log("Received status:", data);
+        if (data.status !== "None") {
+          setStatus(data);
+        }
+      });
+  }, []);
+
+  useEffect(() => {
+    fetch("/api/error")
+      .then(response => response.json())
+      .then(data => {
+        console.log("Received error:", data);
+        if (data.error !== "None") {
+          setError(data);
+        }
+      });
+  }, []);
+
+  useEffect(() => {
+    setStatusHistory(prev => {
+      const lastStatusEntry = [...prev].reverse().find(entry => entry.startsWith("Executing:"));
+      const lastErrorEntry = [...prev].reverse().find(entry => entry.startsWith("Error:"));
+
+      const newStatusText = status?.status ? `Executing: ${status.status}` : null;
+      const newErrorText = error?.error ? `Error: ${error.error}` : null;
+
+      if (newStatusText && newStatusText !== lastStatusEntry) {
+        return [...prev, newStatusText];
+      }
+
+      if (newErrorText && newErrorText !== lastErrorEntry) {
+        return [...prev, newErrorText];
+      }
+
+      return prev;
+    });
+  }, [status, error]);
+
+  useEffect(() => {
+    const fetchData = async (retryCount = 0, maxRetries = 5, delay = 2000) => {
+      try {
+        const response = await fetch("/api/getml");
+        
+        if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+        
+        const data = await response.json();
+        console.log("Received maps:", data);
+        setMapList(data.map_list);
+        if (data.map_list.length > 0) setSelectedMapID(data.map_list[0]);
+      } catch (error) {
+        console.error("Error fetching map list:", error);
+        
+        if (retryCount < maxRetries) {
+          console.log(`Retrying (${retryCount + 1}/${maxRetries}) in ${delay}ms...`);
+          setTimeout(() => {
+            fetchData(retryCount + 1, maxRetries, delay);
+          }, delay);
+        }
+      }
+    };
+
+    fetchData();
+  }, [setSelectedMapID]);
+
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      if (isResizingWidth) {
+        const newWidth = (e.clientX / window.innerWidth) * 100;
+        setSidebarWidth(Math.min(Math.max(newWidth, 10), 50));
+      }
+      
+      if (isResizingHeight) {
+        if (!sidebarRef.current) return;
+        const sidebarHeight = sidebarRef.current.getBoundingClientRect().height;
+        const newHeight = ((sidebarRef.current.getBoundingClientRect().bottom - e.clientY) / sidebarHeight) * 100;
+        setStatusBarHeight(Math.min(Math.max(newHeight, 10), 50));
+      }
+    };
+
+    const handleMouseUp = () => {
+      setIsResizingWidth(false);
+      setIsResizingHeight(false);
+    };
+
+    if (isResizingWidth || isResizingHeight) {
+      document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('mouseup', handleMouseUp);
+    }
+
+    return () => {
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+    };
+  }, [isResizingWidth, isResizingHeight]);
+
+  return {
+    status,
+    error,
+    statusHistory,
+    mapList,
+    sidebarWidth,
+    statusBarHeight,
+    sidebarRef,
+    resizeWidthHandleRef,
+    resizeHeightHandleRef,
+    isResizingWidth,
+    isResizingHeight,
+    setIsResizingWidth,
+    setIsResizingHeight,
+    loadMap,
+    clearStatusHistory,
+  };
+};

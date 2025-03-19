@@ -16,8 +16,9 @@ const App = () => {
       <NavigationTabs setActionTab={setActionTab} />
 
       <div className="flex flex-1 overflow-hidden bg-gray-200">
-        <Sidebar actionTab={actionTab} setSelectedMapID={setSelectedMapID} markedPositions={markedPositions} />
-        <MapArea actionTab={actionTab} selectedMapID={selectedMapID} setMarkedPositions={setMarkedPositions}/>
+        <Sidebar actionTab={actionTab} setSelectedMapID={setSelectedMapID} setMarkedPositions={setMarkedPositions} markedPositions={markedPositions} />
+        
+        <MapArea actionTab={actionTab} selectedMapID={selectedMapID} setMarkedPositions={setMarkedPositions} markedPositions={markedPositions}/>
       </div>
     </div>
   );
