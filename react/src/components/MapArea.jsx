@@ -1,6 +1,5 @@
 import LegendTab from "./LegendTab";
 import MapVisualization from "./InteractiveMap";
-import React, { useState, useEffect } from "react";
 
 const MapArea = ({ actionTab, selectedMapID, setMarkedPositions, markedPositions }) => {
     
