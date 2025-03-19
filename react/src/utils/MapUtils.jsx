@@ -120,50 +120,59 @@ export const handleCanvasClick = (e, mapData, canvasRef, scale, rotation, setSel
   y = Math.floor(y);
   
   // Get data value at this position
-  if (x >= 0 && x < mapData.header.width && y >= 0 && y < mapData.header.height) {
-    const index = (mapData.header.height - y - 1) * mapData.header.width + x;
-    const value = mapData.decompressedData[index];
-    let room_id;
+    if (x >= 0 && x < mapData.header.width && y >= 0 && y < mapData.header.height) {
+        const index = (mapData.header.height - y - 1) * mapData.header.width + x;
+        const value = mapData.decompressedData[index];
+        let room_id;
 
-    if (value === 254 || value === 253) {
-      room_id = "Invalid Position";
-    } else if (value === 252) {
-      room_id = "Wall";
-    } else {
-      room_id = `Room ${value}`;
-    }
-    
-    // Calculate world coordinates
-    const worldX = mapData.header.origin_x + (x * mapData.header.resolution);
-    const worldY = mapData.header.origin_y + ((mapData.header.height - y - 1) * mapData.header.resolution);
-    
-    const pointData = {
-      x,
-      y,
-      index,
-      value,
-      room_id,
-      worldX: worldX.toFixed(2),
-      worldY: worldY.toFixed(2)
-    };
-    
-    setSelectedPoint(pointData);
-    
-    // Add marker if marking is enabled
-    if (isMarkingEnabled) {
-      // Add the new marker
-      const newMarker = {
-        id: Date.now(), // Use timestamp as unique ID
+        if (value === 254 || value === 253) {
+        room_id = "Invalid Position";
+        } else if (value === 252) {
+        room_id = "Wall";
+        } else {
+        room_id = `Room ${value}`;
+        }
+        
+        // Calculate world coordinates
+        const worldX = mapData.header.origin_x + (x * mapData.header.resolution);
+        const worldY = mapData.header.origin_y + ((mapData.header.height - y - 1) * mapData.header.resolution);
+        
+        const pointData = {
         x,
         y,
+        index,
+        value,
+        room_id,
         worldX: worldX.toFixed(2),
-        worldY: worldY.toFixed(2),
-        label: `${markedPositions.length + 1}`
-      };
-      
-      setMarkedPositions(prev => [...prev, newMarker]);
+        worldY: worldY.toFixed(2)
+        };
+        
+        setSelectedPoint(pointData);
+    
+        // Add marker if marking is enabled
+        if (isMarkingEnabled) {
+            const threshold = 5; // Minimum pixel distance to consider markers "too close"
+
+            // Check if a marker already exists near this point
+            const isTooClose = markedPositions.some(marker => 
+            Math.abs(marker.x - x) < threshold && Math.abs(marker.y - y) < threshold
+            );
+    
+            if (!isTooClose) {
+            const newMarker = {
+                id: Date.now(),
+                x,
+                y,
+                worldX: worldX.toFixed(2),
+                worldY: worldY.toFixed(2),
+                label: `${markedPositions.length + 1}`,
+                selected: false
+            };
+            
+            setMarkedPositions(prev => [...prev, newMarker]);  
+            }
+        }
     }
-  }
 };
 
 // Rotation handler

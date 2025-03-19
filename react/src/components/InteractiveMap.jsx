@@ -139,7 +139,19 @@ const MapVisualization = ({ isMarkingEnabled = false, selectedMapID, setMarkedPo
               }}
             >
               <div className="flex flex-col items-center">
-                <FaXmark size={7} color="black" />
+                <button
+                  onClick={() => {
+                    setMarkedPositions(prev =>
+                      prev.map(m => 
+                        m.id === marker.id ? { ...m, selected: !m.selected } : m
+                      )
+                    );
+                  }}
+                  className="focus:outline-none"
+                  style={{ pointerEvents: 'auto' }} // Enable click interaction
+                    >
+                  <FaXmark size={7} color={marker.selected ? "blue" : "black"} />
+                </button>
               </div>
             </div>
           ))}

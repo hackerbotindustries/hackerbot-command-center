@@ -57,30 +57,41 @@ const Sidebar = ({ actionTab, setSelectedMapID, setMarkedPositions, markedPositi
               {markedPositions && markedPositions.length > 0 ? (
                 markedPositions.map(marker => (
                   <li key={marker.id}>
-
-                    <a href="#" className="flex items-center w-full p-2 transition duration-75 rounded-lg group hover:bg-gray-100 hover:text-blue-500">
-                      <FaXmark className="mr-1" />
-                      <input 
-                        type="text"
-                        value={marker.label}
-                        className="w-auto min-w-0 max-w-[100px] px-1 py-0.5 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
-                        onChange={(e) => {
-                          const newLabel = e.target.value;
-                          setMarkedPositions(prev => prev.map(m => 
-                            m.id === marker.id ? {...m, label: newLabel} : m
-                          ));
-                        }}
-                      />: ({marker.worldX}, {marker.worldY})
-                      <button 
+                   <button className={`flex items-center w-full p-2 transition duration-75 rounded-lg group ${marker.selected ? 'bg-blue-100 text-blue-500' : 'hover:bg-gray-100 hover:text-blue-500'}`}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setMarkedPositions((prev) =>
+                        prev.map((m) =>
+                          m.id === marker.id ? { ...m, selected: !m.selected } : m
+                        )
+                      );
+                    }}
+                  >
+                    <FaXmark className="mr-1" />
+                    <input
+                      type="text"
+                      value={marker.label}
+                      className="w-auto min-w-0 max-w-[100px] px-1 py-0.5 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
+                      onClick={(e) => e.stopPropagation()} // Prevents toggling 'selected' when editing text
+                      onChange={(e) => {
+                        const newLabel = e.target.value;
+                        setMarkedPositions((prev) =>
+                          prev.map((m) => (m.id === marker.id ? { ...m, label: newLabel } : m))
+                        );
+                      }}
+                    />
+                    : ({marker.worldX}, {marker.worldY})
+                      <button
                         className="ml-auto px-2 hidden group-hover:inline-block bg-red-500 text-white rounded-lg"
                         onClick={(e) => {
                           e.preventDefault();
-                          setMarkedPositions(prev => prev.filter(m => m.id !== marker.id));
+                          e.stopPropagation(); // Prevents selecting the marker when clicking 'Remove'
+                          setMarkedPositions((prev) => prev.filter((m) => m.id !== marker.id));
                         }}
                       >
                         Remove
                       </button>
-                    </a>
+                    </button>
                   </li>
                 ))
               ) : (
