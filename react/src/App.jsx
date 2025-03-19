@@ -4,7 +4,7 @@ import Sidebar from "./components/Sidebar";
 import MapArea from "./components/MapArea";
 
 const App = () => {
-  const [actionTab, setActionTab] = useState("Mark");
+  const [actionTab, setActionTab] = useState("Maps");
   const [selectedMapID, setSelectedMapID] = useState(null);
   const [markedPositions, setMarkedPositions] = useState([]);
 

@@ -1,16 +1,13 @@
 import { useState } from "react";
+import { FaMapLocationDot } from "react-icons/fa6";
+import { TbMapPinX } from "react-icons/tb";
 
 const NavigationTabs = ({ setActionTab }) => {
   const [menuTab, setMenuTab] = useState("Mapping");
-  const [connectTab, setConnectTab] = useState("Mark");
-  const [currTab, setCurrTab] = useState("Mark");
+  const [connectTab, setConnectTab] = useState("Maps");
+  const [currTab, setCurrTab] = useState("Maps");
 
   const handleActionTab = (action) => {
-    if (action === "Connect") {
-      setConnectTab("Connect"); // Reset Connect tab text
-    }else{
-      setConnectTab("Reset"); // Reset Connect tab text
-    }
     setActionTab(action);
     setCurrTab(action);
   };
@@ -36,8 +33,8 @@ const NavigationTabs = ({ setActionTab }) => {
       <div className="bg-[#DEE9BE] text-[#757575] border border-b-black">
         {menuTab === "Mapping" && (
           <div className="flex gap-4 px-10 py-2">
-            {/* <button onClick={() => handleActionTab("Connect")} className={`pr-4 hover:text-black flex flex-col items-center ${currTab === "Connect" ? "text-black" : "text-gray-500"}`}><svg class="h-4 w-4"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round">  <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />  <circle cx="8.5" cy="7" r="4" />  <polyline points="17 11 19 13 23 9" /></svg>{connectTab}</button> */}
-            <button onClick={() => handleActionTab("Mark")} className={`pr-4 hover:text-black flex flex-col items-center ${currTab === "Mark" ? "text-black" : "text-gray-500"}`}><svg class="h-4 w-4"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round">  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />  <circle cx="12" cy="10" r="3" /></svg>Mark</button>
+            <button onClick={() => handleActionTab("Maps")} className={`pr-4 hover:text-black flex flex-col items-center ${currTab === "Maps" ? "text-black" : "text-gray-500"}`}><FaMapLocationDot size={20} />Maps</button>
+            <button onClick={() => handleActionTab("Mark")} className={`pr-4 hover:text-black flex flex-col items-center ${currTab === "Mark" ? "text-black" : "text-gray-500"}`}><TbMapPinX size={20} />Mark</button>
             {/* <button onClick={() => handleActionTab("GOTO")} className={`pr-4 hover:text-black flex flex-col items-center ${currTab === "GOTO" ? "text-black" : "text-gray-500"}`}><svg class="h-4 w-4 "  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round">  <polygon points="12 2 19 21 12 17 5 21 12 2" /></svg>GOTO</button> */}
           </div>
         )}
