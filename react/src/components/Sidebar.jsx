@@ -29,26 +29,30 @@ const Sidebar = ({ actionTab, setSelectedMapID, setMarkedPositions, markedPositi
       />
       
       <div className="flex-1 overflow-y-auto">
-        {actionTab === "Mark" && (
+        {actionTab === "Maps" && (
           <div className="p-2 rounded-lg">
             <div className="pb-2 mb-3 border-b-2 border-gray-800">
               <span className="font-bold text-black">Map List</span>
             </div>
             <ul className="py-1 space-y-1">
-              {mapList.length > 0 ? (
-                mapList.map((mapId, index) => (
-                  <li key={index}>
-                    <a href="#" className="flex items-center w-full p-2 transition duration-75 rounded-lg group hover:bg-gray-100 hover:text-blue-500">
-                      <FaRegMap className="mr-1" />
-                      {mapId}
-                      <button className="ml-auto px-3 hidden group-hover:inline-block bg-blue-500 text-white rounded-lg" onClick={(e) => { e.preventDefault(); loadMap(mapId); }}>
-                        Load
-                      </button>
-                    </a>
-                  </li>
-                ))
-              ) : <li className="text-center text-gray-500">Loading...</li>}
+            {mapList.length > 0 ? (
+              mapList.map((mapId, index) => (
+                <li key={index}>
+                  <a href="#" className="flex items-center w-full p-2 transition duration-75 rounded-lg group hover:bg-gray-100 hover:text-blue-500">
+                    <FaRegMap className="mr-1" />
+                    {mapId}
+                    <button className="ml-auto px-3 hidden group-hover:inline-block bg-blue-500 text-white rounded-lg" onClick={(e) => { e.preventDefault(); loadMap(mapId); }}>
+                      Load
+                    </button>
+                  </a>
+                </li>
+              ))
+            ) : <li className="text-center text-gray-500">Loading...</li>}
             </ul>
+          </div>
+        )}
+        {actionTab === "Mark" && (
+          <div className="p-2 rounded-lg">
             {/* Markers List */}
             <div className="pb-2 mb-3 border-b-2 border-gray-800">
               <span className="font-bold text-black">Markers</span>
