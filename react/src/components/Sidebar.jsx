@@ -18,7 +18,9 @@ const Sidebar = ({ actionTab, setSelectedMapID, setMarkedPositions, markedPositi
     setIsResizingHeight,
     loadMap,
     clearStatusHistory,
-  } = useSidebarLogic(setSelectedMapID);
+    saveMarkers,
+    saveButtonText,
+  } = useSidebarLogic(setSelectedMapID, markedPositions, setMarkedPositions);
 
   return (
     <div ref={sidebarRef} className="bg-white flex flex-col relative text-sm" style={{ width: `${sidebarWidth}%` }}>
@@ -54,8 +56,14 @@ const Sidebar = ({ actionTab, setSelectedMapID, setMarkedPositions, markedPositi
         {actionTab === "Mark" && (
           <div className="p-2 rounded-lg">
             {/* Markers List */}
-            <div className="pb-2 mb-3 border-b-2 border-gray-800">
+            <div className="pb-2 mb-3 border-b-2 border-gray-800 flex justify-between items-center">
               <span className="font-bold text-black">Markers</span>
+              <button 
+                className="px-2 mr-2 bg-green-500 text-white rounded hover:bg-green-600"
+                onClick={() => saveMarkers(markedPositions, selectedMapID)}
+              >
+                {saveButtonText}
+              </button>
             </div>
             <ul className="py-1 space-y-1">
               {markedPositions && markedPositions.length > 0 ? (
@@ -63,7 +71,7 @@ const Sidebar = ({ actionTab, setSelectedMapID, setMarkedPositions, markedPositi
                   .filter(marker => marker.map_id === selectedMapID)
                   .map(marker => (
                   <li key={marker.id}>
-                   <button className={`flex items-center w-full p-2 transition duration-75 rounded-lg group ${marker.selected ? 'bg-blue-100 text-blue-500' : 'hover:bg-gray-100 hover:text-blue-500'}`}
+                   <div className={`flex items-center w-full p-2 transition duration-75 rounded-lg group ${marker.selected ? 'bg-blue-100 text-blue-500' : 'hover:bg-gray-100 hover:text-blue-500'}`}
                     onClick={(e) => {
                       e.preventDefault();
                       setMarkedPositions((prev) =>
@@ -87,17 +95,17 @@ const Sidebar = ({ actionTab, setSelectedMapID, setMarkedPositions, markedPositi
                       }}
                     />
                     : ({marker.worldX}, {marker.worldY})
-                      <button
-                        className="ml-auto px-2 hidden group-hover:inline-block bg-red-500 text-white rounded-lg"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation(); // Prevents selecting the marker when clicking 'Remove'
-                          setMarkedPositions((prev) => prev.filter((m) => m.id !== marker.id));
-                        }}
-                      >
-                        Remove
-                      </button>
+                    <button
+                      className="ml-auto px-2 hidden group-hover:inline-block bg-red-500 text-white rounded-lg"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation(); // Prevents selecting the marker when clicking 'Remove'
+                        setMarkedPositions((prev) => prev.filter((m) => m.id !== marker.id));
+                      }}
+                    >
+                      Remove
                     </button>
+                  </div>
                   </li>
                 ))
               ) : (

@@ -1,10 +1,12 @@
 import { useState, useEffect, useRef } from "react";
 
-export const useSidebarLogic = (setSelectedMapID) => {
+export const useSidebarLogic = (setSelectedMapID, markedPositions, setMarkedPositions) => {
   const [status, setStatus] = useState("");
   const [error, setError] = useState("");
   const [statusHistory, setStatusHistory] = useState([]);
   const [mapList, setMapList] = useState([]);
+  const [saveButtonText, setSaveButtonText] = useState('Save');
+  const [lastSavedMarkers, setLastSavedMarkers] = useState(null);
 
   const [sidebarWidth, setSidebarWidth] = useState(20);
   const [statusBarHeight, setStatusBarHeight] = useState(25);
@@ -16,14 +18,69 @@ export const useSidebarLogic = (setSelectedMapID) => {
   const resizeWidthHandleRef = useRef(null);
   const resizeHeightHandleRef = useRef(null);
 
+  const loadMarkers = async (mapId) => {
+    try {
+      const response = await fetch(`/api/load-markers/${mapId}`);
+      if (!response.ok) {
+        throw new Error('Failed to load markers');
+      }
+      const data = await response.json();
+      setMarkedPositions(data.markers);
+      setLastSavedMarkers(data.markers);
+      setSaveButtonText('Save');
+    } catch (error) {
+      console.error('Error loading markers:', error);
+    }
+  };
+
   const loadMap = (mapId) => {
     console.log("Loading map:", mapId);
     setSelectedMapID(mapId);
+    loadMarkers(mapId);
   };
 
   const clearStatusHistory = () => {
     setStatusHistory([]);
   };
+
+  const saveMarkers = async (markedPositions, selectedMapID) => {
+    try {
+      setSaveButtonText('Saving...');
+      const response = await fetch('/api/save-markers', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          map_id: selectedMapID,
+          markers: markedPositions.filter(marker => marker.map_id === selectedMapID)
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to save markers');
+      }
+
+      const data = await response.json();
+      setLastSavedMarkers(markedPositions);
+      setSaveButtonText('Saved!');
+    } catch (error) {
+      console.error('Error saving markers:', error);
+      setSaveButtonText('Error');
+      setTimeout(() => setSaveButtonText('Save'), 1000);
+    }
+  };
+
+  // Effect to check if markers have changed from last saved state
+  useEffect(() => {
+    if (lastSavedMarkers) {
+      const markersChanged = JSON.stringify(lastSavedMarkers) !== JSON.stringify(markedPositions);
+      if (markersChanged) {
+        setSaveButtonText('Save');
+      }
+    }
+  }, [markedPositions, lastSavedMarkers]);
 
   useEffect(() => {
     fetch("/api/status")
@@ -140,5 +197,7 @@ export const useSidebarLogic = (setSelectedMapID) => {
     setIsResizingHeight,
     loadMap,
     clearStatusHistory,
+    saveMarkers,
+    saveButtonText,
   };
 };
