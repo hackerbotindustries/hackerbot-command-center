@@ -133,8 +133,17 @@ export const useSidebarLogic = (setSelectedMapID, markedPositions, setMarkedPosi
         
         const data = await response.json();
         console.log("Received maps:", data);
+        
+        if (data.map_list === null || data.map_list === undefined) {
+          setError("No map list found, please create a map first!");
+          setMapList([]);
+          return;
+        }
+        
         setMapList(data.map_list);
-        if (data.map_list.length > 0) setSelectedMapID(data.map_list[0]);
+        if (data.map_list.length > 0) {
+          setSelectedMapID(data.map_list[0]);
+        }
       } catch (error) {
         console.error("Error fetching map list:", error);
         
@@ -143,6 +152,8 @@ export const useSidebarLogic = (setSelectedMapID, markedPositions, setMarkedPosi
           setTimeout(() => {
             fetchData(retryCount + 1, maxRetries, delay);
           }, delay);
+        }else{
+          setError("Error fetching map list, is flask-api running?");
         }
       }
     };
