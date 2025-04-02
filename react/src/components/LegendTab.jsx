@@ -1,3 +1,21 @@
+//################################################################################
+// Copyright (c) 2025 Hackerbot Industries LLC
+//
+// This source code is licensed under the MIT license found in the
+// LICENSE file in the root directory of this source tree.
+//
+// Created By: Allen Chien
+// Created:    April 2025
+// Updated:    2025.04.01
+//
+// This script is the main component for the Legend Tab.
+//
+// Special thanks to the following for their code contributions to this codebase:
+// Allen Chien - https://github.com/AllenChienXXX
+//
+//################################################################################
+
+
 import { useState } from "react";
 import { FaBeer } from 'react-icons/fa'; // Font Awesome icons
 import { RiBatteryChargeLine } from "react-icons/ri";
@@ -6,10 +24,6 @@ import { RiRobot2Fill } from "react-icons/ri";
 import { IoLocationSharp } from "react-icons/io5";
 import { TfiLocationArrow } from "react-icons/tfi";
 import { RiAddCircleFill } from "react-icons/ri";
-
-
-
-
 
 const LegendTab = ({ isCollapsible = true }) => {
   const [isExpanded, setIsExpanded] = useState(true);

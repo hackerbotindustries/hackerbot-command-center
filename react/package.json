@@ -1,8 +1,9 @@
 {
-  "name": "hackerbot-dashboard",
+  "name": "hackerbot-command-center",
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "license": "MIT",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
