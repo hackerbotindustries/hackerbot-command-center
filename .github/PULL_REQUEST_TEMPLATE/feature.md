@@ -1,20 +1,33 @@
----
-name: "Feature Pull Request"
-about: "Submit a new feature or enhancement."
-title: "[Feature]: "
-labels: [enhancement]
----
-## Description
-Describe how this feature aligns with previous development.
+This pull request introduces a new feature or enhancement and aligns with existing development practices.
 
-## Related Issues
-List the related feature requests.
+**Tasks**
+- [ ] Implement the feature as described in the related issue.
+- [ ] Ensure all required files are updated.
+- [ ] Validate functionality through testing.
 
-## Implementation Details
-Detail the approach taken for implementation.
+**How to check locally**
+- Clone the repository if not already available:  
+  ```shell
+  git clone https://github.com/hackerbotindustries/hackerbot-command-center.git
+  ```
+- Navigate to the project directory:
+  ```shell
+  cd ~/hackerbot/hackerbot-command-center
+  ```
+- Switch to this branch:
+  ```shell
+  git fetch
+  git checkout <branch-name>
+  git pull
+  ```
+- Review modified files and ensure expected changes.
+- Execute relevant tests and confirm the feature works as intended.
+- Validate usability and performance of the new feature.
 
-## How to Test Locally
-Provide clear instructions to verify the feature works as expected.
-
-## Documentation
-If applicable, list related documentation updates.
+**Reviewer Checklist**
+- [ ] Verify that the issue description is clear and comprehensive.
+- [ ] Check if the bug is reproducible before and resolved after the fix.
+- [ ] Review code changes for correctness and adherence to coding guidelines.
+- [ ] Ensure all related files are correctly updated.
+- [ ] Confirm that all necessary tests have been run and passed.
+- [ ] Validate that no new bugs are introduced by the fix.
