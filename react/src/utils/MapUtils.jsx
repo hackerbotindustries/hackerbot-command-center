@@ -410,8 +410,8 @@ export const fetchMapData = async (selectedMapID, setMapData, MapUtils) => {
   }
   
   try {
-    const response = await fetch(`/api/getmap/${selectedMapID}`);
-    console.log(`Fetching map data from /api/getmap/${selectedMapID}`);  
+    const response = await fetch(`/api/v1/base/maps/${selectedMapID}`);
+    console.log(`Fetching map data from /api/v1/base/maps/${selectedMapID}`);  
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }

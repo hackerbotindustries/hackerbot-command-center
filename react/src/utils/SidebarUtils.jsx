@@ -145,7 +145,7 @@ export const useSidebarLogic = (setSelectedMapID, markedPositions, setMarkedPosi
   useEffect(() => {
     const fetchData = async (retryCount = 0, maxRetries = 5, delay = 2000) => {
       try {
-        const response = await fetch("/api/getml");
+        const response = await fetch("/api/v1/base/maps");
         
         if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
         
