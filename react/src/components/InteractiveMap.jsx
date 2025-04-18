@@ -17,7 +17,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { FaXmark } from "react-icons/fa6";
-import { BiSolidRightTopArrowCircle } from "react-icons/bi";
+import { BiDownArrowCircle } from "react-icons/bi";
 
 import * as Interaction from '../utils/Interaction';
 
@@ -199,15 +199,15 @@ const MapVisualization = ({ isMarkingEnabled = false, selectedMapID, setMarkedPo
             <div
               className="absolute"
               style={{
-                left: (robotPose.x - mapData.header.origin_x) / mapData.header.resolution - 8,
-                top: mapData.header.height - (robotPose.y - mapData.header.origin_y) / mapData.header.resolution -12,
+                left: (robotPose.x - mapData.header.origin_x) / mapData.header.resolution - 7,
+                top: mapData.header.height - (robotPose.y - mapData.header.origin_y) / mapData.header.resolution -10,
                 pointerEvents: 'none',
-                transform: `rotate(${robotPose.angle}deg)`,
+                transform: `rotate(${robotPose.angle - 90}deg)`,
                 transformOrigin: 'center',
               }}
             >
               <div className="flex flex-col items-center">
-                <BiSolidRightTopArrowCircle size={16} color="black" />
+                <BiDownArrowCircle size={16} fill='black'/>
               </div>
             </div>
           )}

@@ -78,18 +78,22 @@ export const handleCanvasClick = (e, mapData, canvasRef, scale, rotation, setSel
               );
       
               if (!isTooClose) {
-              const newMarker = {
-                  id: Date.now(),
-                  x,
-                  y,
-                  worldX: worldX.toFixed(2),
-                  worldY: worldY.toFixed(2),
-                  label: `${markedPositions.length + 1}`,
-                  selected: false,
-                  map_id: selectedMapID
-              };
-              
-              setMarkedPositions(prev => [...prev, newMarker]);  
+                const maxLabel = markedPositions.reduce((max, marker) => {
+                  const labelNum = parseInt(marker.label, 10);
+                  return isNaN(labelNum) ? max : Math.max(max, labelNum);
+                }, 0);
+                const newMarker = {
+                    id: Date.now(),
+                    x,
+                    y,
+                    worldX: worldX.toFixed(2),
+                    worldY: worldY.toFixed(2),
+                    label: `${maxLabel + 1}`,
+                    selected: false,
+                    map_id: selectedMapID
+                };
+                
+                setMarkedPositions(prev => [...prev, newMarker]);  
               }
           }
       }
