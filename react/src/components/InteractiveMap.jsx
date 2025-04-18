@@ -111,7 +111,7 @@ const MapVisualization = ({ isMarkingEnabled = false, selectedMapID, setMarkedPo
   useEffect(() => {
     const interval = setInterval(() => {
       MapApi.fetchRobotPositions(setRobotPose);
-    }, 1000); // fetch every 1000 ms (1 second)
+    }, 100); // fetch every 1000 ms (1 second)
   
     return () => clearInterval(interval); // cleanup when component unmounts
   }, []);
@@ -202,7 +202,7 @@ const MapVisualization = ({ isMarkingEnabled = false, selectedMapID, setMarkedPo
                 left: (robotPose.x - mapData.header.origin_x) / mapData.header.resolution - 7,
                 top: mapData.header.height - (robotPose.y - mapData.header.origin_y) / mapData.header.resolution -10,
                 pointerEvents: 'none',
-                transform: `rotate(${robotPose.angle - 90}deg)`,
+                transform: `rotate(${robotPose.angle + 90}deg)`,
                 transformOrigin: 'center',
               }}
             >
