@@ -17,7 +17,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { FaXmark } from "react-icons/fa6";
-import { SiProbot } from "react-icons/si";
+import { BiSolidRightTopArrowCircle } from "react-icons/bi";
 
 import * as Interaction from '../utils/Interaction';
 
@@ -199,7 +199,7 @@ const MapVisualization = ({ isMarkingEnabled = false, selectedMapID, setMarkedPo
             <div
               className="absolute"
               style={{
-                left: (robotPose.x - mapData.header.origin_x) / mapData.header.resolution - 16,
+                left: (robotPose.x - mapData.header.origin_x) / mapData.header.resolution - 8,
                 top: mapData.header.height - (robotPose.y - mapData.header.origin_y) / mapData.header.resolution -12,
                 pointerEvents: 'none',
                 transform: `rotate(${robotPose.angle}deg)`,
@@ -207,7 +207,7 @@ const MapVisualization = ({ isMarkingEnabled = false, selectedMapID, setMarkedPo
               }}
             >
               <div className="flex flex-col items-center">
-                <SiProbot size={16} color="black" />
+                <BiSolidRightTopArrowCircle size={16} color="black" />
               </div>
             </div>
           )}
