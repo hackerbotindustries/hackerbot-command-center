@@ -6,19 +6,28 @@
 //
 // Created By: Allen Chien
 // Created:    April 2025
-// Updated:    2025.04.01
+// Updated:    2025.04.17
 //
 // This script is the main component for the Interactive Map.
 //
 // Special thanks to the following for their code contributions to this codebase:
 // Allen Chien - https://github.com/AllenChienXXX
-//
 //################################################################################
 
 
 import React, { useState, useEffect, useRef } from 'react';
 import { FaXmark } from "react-icons/fa6";
-import * as MapUtils from '../utils/MapUtils';
+import { SiProbot } from "react-icons/si";
+
+import * as Interaction from '../utils/Interaction';
+
+import * as Drawing from '../utils/Drawing';
+
+import * as CanvasHelper from '../utils/CanvasHelper';
+
+import * as MapApi from '../utils/MapApi';
+
+import * as Markers from '../utils/Markers';
 
 const MapVisualization = ({ isMarkingEnabled = false, selectedMapID, setMarkedPositions, markedPositions }) => {
   const [mapData, setMapData] = useState(null);
@@ -30,25 +39,27 @@ const MapVisualization = ({ isMarkingEnabled = false, selectedMapID, setMarkedPo
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   const [rotation, setRotation] = useState(0);
-  
+  const [robotPose, setRobotPose] = useState({ x: 0, y: 0, angle: 0 });
+
   const canvasRef = useRef(null);
   const containerRef = useRef(null);
+  const robotImgRef = useRef(null);
   
   // Wrapper functions that bind the state to the utility functions
   const handleZoom = (e) => {
-    MapUtils.handleZoom(e, containerRef, position, setPosition, setScale);
+    Interaction.handleZoom(e, containerRef, position, setPosition, setScale);
   };
   
   const handleMouseDown = (e) => {
-    MapUtils.handleMouseDown(e, setIsDragging, position, setDragStart);
+    Interaction.handleMouseDown(e, setIsDragging, position, setDragStart);
   };
   
   const handleMouseMove = (e) => {
-    MapUtils.handleMouseMove(e, isDragging, dragStart, setPosition);
+    Interaction.handleMouseMove(e, isDragging, dragStart, setPosition);
   };
   
   const handleCanvasClick = (e) => {
-    MapUtils.handleCanvasClick(
+    Markers.handleCanvasClick(
       e, 
       mapData, 
       canvasRef, 
@@ -63,39 +74,48 @@ const MapVisualization = ({ isMarkingEnabled = false, selectedMapID, setMarkedPo
   };
   
   const handleMouseUp = (e) => {
-    MapUtils.handleMouseUp(e, isDragging, setIsDragging, canvasRef, handleCanvasClick);
+    Interaction.handleMouseUp(e, isDragging, setIsDragging, canvasRef, handleCanvasClick);
   };
   
   const handleRotate = () => {
-    MapUtils.handleRotate(setRotation, canvasRef, containerRef, scale, setPosition);
+    CanvasHelper.handleRotate(setRotation, canvasRef, containerRef, scale, setPosition);
   };
   
   const centerMapInContainer = () => {
-    MapUtils.centerMapInContainer(canvasRef, containerRef, rotation, setScale, setPosition);
+    CanvasHelper.centerMapInContainer(canvasRef, containerRef, rotation, setScale, setPosition);
   };
   
   const resetView = () => {
-    MapUtils.resetView(setScale, setPosition, setRotation, centerMapInContainer);
+    CanvasHelper.resetView(setScale, setPosition, setRotation, centerMapInContainer);
   };
   
   const clearAllMarkers = () => {
-    MapUtils.clearAllMarkers(setMarkedPositions);
+    Markers.clearAllMarkers(setMarkedPositions);
   };
 
   // Effect for drawing the map
   useEffect(() => {
-    MapUtils.drawMapData(mapData, canvasRef, centerMapInContainer);
+    Drawing.drawMapData(mapData, canvasRef, centerMapInContainer);
   }, [mapData]);
 
   // Effect for drawing grid lines and origin
   useEffect(() => {
-    MapUtils.drawGridAndOrigin(mapData, canvasRef);
+    Drawing.drawGridAndOrigin(mapData, canvasRef);
   }, [mapData]);
 
   // Effect for fetching map data
   useEffect(() => {
-    MapUtils.fetchMapData(selectedMapID, setMapData, MapUtils);
+    MapApi.fetchMapData(selectedMapID, setMapData);
   }, [selectedMapID]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      MapApi.fetchRobotPositions(setRobotPose);
+    }, 1000); // fetch every 1000 ms (1 second)
+  
+    return () => clearInterval(interval); // cleanup when component unmounts
+  }, []);
+  
   
   // Effect for setting up event listeners
   useEffect(() => {
@@ -143,7 +163,8 @@ const MapVisualization = ({ isMarkingEnabled = false, selectedMapID, setMarkedPo
               maxWidth: '100%', 
               maxHeight: '100%',
               display: 'block',
-              imageRendering: 'pixelated' // Make crisp pixels when zoomed
+              imageRendering: 'pixelated',
+              imageRendering: 'crisp-edges',
             }}
           />
               
@@ -174,6 +195,22 @@ const MapVisualization = ({ isMarkingEnabled = false, selectedMapID, setMarkedPo
               </div>
             </div>
           ))}
+          {robotPose && mapData && (
+            <div
+              className="absolute"
+              style={{
+                left: (robotPose.x - mapData.header.origin_x) / mapData.header.resolution - 16,
+                top: mapData.header.height - (robotPose.y - mapData.header.origin_y) / mapData.header.resolution -12,
+                pointerEvents: 'none',
+                transform: `rotate(${robotPose.angle}deg)`,
+                transformOrigin: 'center',
+              }}
+            >
+              <div className="flex flex-col items-center">
+                <SiProbot size={16} color="black" />
+              </div>
+            </div>
+          )}
         </div>
             
         {selectedPoint && (
