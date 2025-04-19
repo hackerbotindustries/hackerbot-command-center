@@ -111,7 +111,7 @@ const MapVisualization = ({ isMarkingEnabled = false, selectedMapID, setMarkedPo
   useEffect(() => {
     const interval = setInterval(() => {
       MapApi.fetchRobotPositions(setRobotPose);
-    }, 100); // fetch every 1000 ms (1 second)
+    }, 1000); // fetch every 1000 ms (1 second)
   
     return () => clearInterval(interval); // cleanup when component unmounts
   }, []);
