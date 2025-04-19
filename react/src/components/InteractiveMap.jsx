@@ -43,7 +43,6 @@ const MapVisualization = ({ isMarkingEnabled = false, selectedMapID, setMarkedPo
 
   const canvasRef = useRef(null);
   const containerRef = useRef(null);
-  const robotImgRef = useRef(null);
   
   // Wrapper functions that bind the state to the utility functions
   const handleZoom = (e) => {
@@ -135,6 +134,25 @@ const MapVisualization = ({ isMarkingEnabled = false, selectedMapID, setMarkedPo
       window.removeEventListener('mousemove', handleMouseMove);
     };
   }, [isDragging, dragStart, position, isMarkingEnabled]);
+
+  useEffect(() => {
+    if (canvasRef.current && containerRef.current) {
+      const canvas = canvasRef.current;
+      const container = containerRef.current;
+  
+      const canvasWidth = canvas.width * scale;
+      const canvasHeight = canvas.height * scale;
+  
+      const containerWidth = container.offsetWidth;
+      const containerHeight = container.offsetHeight;
+  
+      const centerX = (containerWidth - canvasWidth) / 2;
+      const centerY = (containerHeight - canvasHeight) / 2;
+  
+      setPosition({ x: centerX, y: centerY });
+    }
+  }, [mapData, scale]);
+  
   
   return (
     <div className="flex flex-col w-full h-full">
@@ -150,18 +168,18 @@ const MapVisualization = ({ isMarkingEnabled = false, selectedMapID, setMarkedPo
         }}
       >
         <div 
-          className="absolute top-1/4"
+          className="absolute"
           style={{
             transform: `translate(${position.x}px, ${position.y}px) scale(${scale}) rotate(${rotation}deg)`,
-            transformOrigin: 'center center',
+            transformOrigin: 'top left',
           }}
           onMouseDown={handleMouseDown}
         >
           <canvas 
             ref={canvasRef}
+            width={mapData?.header.width}
+            height={mapData?.header.height}
             style={{ 
-              maxWidth: '100%', 
-              maxHeight: '100%',
               display: 'block',
               imageRendering: 'pixelated',
               imageRendering: 'crisp-edges',
