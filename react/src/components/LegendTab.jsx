@@ -17,13 +17,12 @@
 
 
 import { useState } from "react";
-import { FaBeer } from 'react-icons/fa'; // Font Awesome icons
-import { RiBatteryChargeLine } from "react-icons/ri";
 import { FaPlus } from "react-icons/fa6";
-import { RiRobot2Fill } from "react-icons/ri";
 import { IoLocationSharp } from "react-icons/io5";
-import { TfiLocationArrow } from "react-icons/tfi";
 import { RiAddCircleFill } from "react-icons/ri";
+import { BiDownArrowCircle } from "react-icons/bi";
+import { FaXmark } from "react-icons/fa6";
+
 
 const LegendTab = ({ isCollapsible = true }) => {
   const [isExpanded, setIsExpanded] = useState(true);
@@ -31,8 +30,9 @@ const LegendTab = ({ isCollapsible = true }) => {
   const legendEntries = [
     // { icon: RiBatteryChargeLine, label: "Charger", icon_color: "text-green-500" },
     { icon: FaPlus,label: "Origin (0, 0)", icon_color: "text-[#FF0000]" },
-    // { icon: RiRobot2Fill, label: "Robot Position", icon_color: "text-[#E93273]" },
-    { icon: IoLocationSharp, label: "Marked Position", icon_color: "text-blue" },
+    { icon: BiDownArrowCircle, label: "Robot Position", icon_color: "text-black" },
+    { icon: FaXmark, label: "Marker", icon_color: "text-blue" },
+    
     // { icon: TfiLocationArrow, label: "Destination", icon_color: "text-[#900B09]" },
   ];
 
