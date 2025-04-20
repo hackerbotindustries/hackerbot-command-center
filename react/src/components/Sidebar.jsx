@@ -6,7 +6,7 @@
 //
 // Created By: Allen Chien
 // Created:    April 2025
-// Updated:    2025.04.01
+// Updated:    2025.04.20
 //
 // This script is the main component for the Sidebar.
 //
@@ -14,6 +14,7 @@
 // Allen Chien - https://github.com/AllenChienXXX
 //
 //################################################################################
+
 
 import { FaXmark } from "react-icons/fa6";
 import { FaRegMap } from "react-icons/fa";
