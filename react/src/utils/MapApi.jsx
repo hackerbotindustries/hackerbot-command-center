@@ -42,5 +42,57 @@ export const fetchRobotPositions = async (setRobotPose) => {
     } catch (err) {
       console.error('Error fetching robot position:', err);
     }
-  };
-  
+};
+
+export async function handleGotoClick(pos) {
+  try {
+    const response = await fetch('/api/v1/base/maps', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        method: 'goto',
+        x: pos.worldX,
+        y: pos.worldY,
+        angle: pos.angle,
+        speed: 0.5, // or make this dynamic
+      }),
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      console.log('Robot response:', data.response);
+    } else {
+      console.error('Robot error:', data.error);
+    }
+  } catch (error) {
+    console.error('Fetch failed:', error);
+  }
+}
+
+export async function handleDockClick() {
+  try {
+    const response = await fetch('/api/v1/base', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        method: 'dock',
+      }),
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      console.log('Docking successful:', data.response);
+    } else {
+      console.error('Docking failed:', data.error);
+    }
+  } catch (error) {
+    console.error('Dock request error:', error);
+  }
+}
+

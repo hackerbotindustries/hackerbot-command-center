@@ -17,7 +17,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { FaXmark } from "react-icons/fa6";
-import { BiDownArrowCircle } from "react-icons/bi";
+import { FaArrowAltCircleDown } from "react-icons/fa";
 
 import * as Interaction from '../utils/Interaction';
 
@@ -208,7 +208,7 @@ const MapVisualization = ({ isMarkingEnabled = false, selectedMapID, setMarkedPo
                   className="focus:outline-none"
                   style={{ pointerEvents: 'auto' }} // Enable click interaction
                     >
-                  <FaXmark size={7} color={marker.selected ? "blue" : "black"} />
+                  <FaXmark size={8} color={marker.selected ? "blue" : "black"} />
                 </button>
               </div>
             </div>
@@ -217,15 +217,15 @@ const MapVisualization = ({ isMarkingEnabled = false, selectedMapID, setMarkedPo
             <div
               className="absolute"
               style={{
-                left: (robotPose.x - mapData.header.origin_x) / mapData.header.resolution - 7,
-                top: mapData.header.height - (robotPose.y - mapData.header.origin_y) / mapData.header.resolution -10,
+                left: (robotPose.x - mapData.header.origin_x) / mapData.header.resolution - 4,
+                top: mapData.header.height - (robotPose.y - mapData.header.origin_y) / mapData.header.resolution -6,
                 pointerEvents: 'none',
                 transform: `rotate(${robotPose.angle + 90}deg)`,
                 transformOrigin: 'center',
               }}
             >
               <div className="flex flex-col items-center">
-                <BiDownArrowCircle size={16} fill='black'/>
+                <FaArrowAltCircleDown size={8} style={{ backgroundColor: 'white', borderRadius: '10000%' }} color="black" />
               </div>
             </div>
           )}
