@@ -6,7 +6,7 @@
 //
 // Created By: Allen Chien
 // Created:    April 2025
-// Updated:    2025.04.01
+// Updated:    2025.04.20
 //
 // This script is the main component for the Navigation Tabs.
 //
@@ -19,10 +19,10 @@
 import { useState } from "react";
 import { FaMapLocationDot } from "react-icons/fa6";
 import { TbMapPinX } from "react-icons/tb";
+import { IoMdNavigate } from "react-icons/io";
 
 const NavigationTabs = ({ setActionTab }) => {
   const [menuTab, setMenuTab] = useState("Mapping");
-  const [connectTab, setConnectTab] = useState("Maps");
   const [currTab, setCurrTab] = useState("Maps");
 
   const handleActionTab = (action) => {
@@ -53,7 +53,7 @@ const NavigationTabs = ({ setActionTab }) => {
           <div className="flex gap-4 px-10 py-2">
             <button onClick={() => handleActionTab("Maps")} className={`pr-4 hover:text-black flex flex-col items-center ${currTab === "Maps" ? "text-black" : "text-gray-500"}`}><FaMapLocationDot size={20} />Maps</button>
             <button onClick={() => handleActionTab("Mark")} className={`pr-4 hover:text-black flex flex-col items-center ${currTab === "Mark" ? "text-black" : "text-gray-500"}`}><TbMapPinX size={20} />Mark</button>
-            {/* <button onClick={() => handleActionTab("GOTO")} className={`pr-4 hover:text-black flex flex-col items-center ${currTab === "GOTO" ? "text-black" : "text-gray-500"}`}><svg class="h-4 w-4 "  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round">  <polygon points="12 2 19 21 12 17 5 21 12 2" /></svg>GOTO</button> */}
+            <button onClick={() => handleActionTab("GOTO")} className={`pr-4 hover:text-black flex flex-col items-center ${currTab === "GOTO" ? "text-black" : "text-gray-500"}`}><IoMdNavigate size={20} /> GOTO</button>
           </div>
         )}
         {/* {menuTab === "Grab" && (
@@ -71,8 +71,6 @@ const NavigationTabs = ({ setActionTab }) => {
           </div>
         )} */}
       </div>
-
-
     </div>
   );
 };
