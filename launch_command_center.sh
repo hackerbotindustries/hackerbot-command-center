@@ -57,6 +57,16 @@ echo "---------------------------------------------"
 echo "STARTING HACKERBOT COMMAND CENTER"
 echo "---------------------------------------------"
 
+# Stop existing processes first
+if command -v stop-command-center >/dev/null 2>&1; then
+    echo "Cleaning up existing process"
+    if ! stop-command-center >> "$logfile_frontend" 2>&1; then
+        echo "Failed to execute cleanup..."
+    fi
+else
+    echo "stop-command-center command not found. Skipping cleanup."
+fi
+
 # Start React Frontend
 (npm run dev -- --host --port $REACT_PORT >> "$logfile_frontend" 2>&1) &
 PID_FRONTEND=$!
